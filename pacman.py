@@ -74,16 +74,18 @@ if __name__ == '__main__':
   ap.add_argument('-l', '--load', required=False, help='Network weights to load from file')
   args = vars(ap.parse_args())
 
-  # Optionally load saved weights from file
-  # TODO
+  # Load saved weights from file or initialize weights using Xavier initialization
+  if (args['load'] != None):
+    model = pickle.load(open(output_filename, 'rb'))
+  else:
+    # Initialize the weights using Xavier initialization
+    model = {}
+    model['W1'] = np.random.randn(size_layer1, input_image_size[0]*input_image_size[1]) / np.sqrt(input_image_size[0]*input_image_size[1])
+    model['W2'] = np.random.randn(size_output, size_layer1) / np.sqrt(size_layer1)
 
   # Save the weights on sigint
   signal.signal(signal.SIGINT, handle_sigint)
 
-  # Initialize the weights using Xavier initialization
-  model = {}
-  model['W1'] = np.random.randn(size_layer1, input_image_size[0]*input_image_size[1]) / np.sqrt(input_image_size[0]*input_image_size[1])
-  model['W2'] = np.random.randn(size_output, size_layer1) / np.sqrt(size_layer1)
 
   env = gym.make("MsPacman-v0")
 
