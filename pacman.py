@@ -4,12 +4,15 @@ import cPickle as pickle
 import gym
 import matplotlib.pyplot as plt
 import argparse
+import signal
 
 # Configuration Parameters
 input_image_size = (80,86)
 size_layer1 = 200
 size_output = 4
 learning_rate = 0.0001
+
+output_filename = 'weights.p'
 
 ''' Compute softmax values for each sets of scores in x. From Udacity Course '''
 def softmax(x):
@@ -56,6 +59,14 @@ def pick_action(action_probs):
     action += 1
   return action
 
+def save_weights():
+  print("Saving weights to: "+output_filename)
+  pickle.dump(model, open(output_filename, 'wb'))
+
+def handle_sigint(signal, frame):
+  save_weights()
+  quit()
+
 if __name__ == '__main__':
 
   # Setup argument parsing for settings and configuration
@@ -65,6 +76,9 @@ if __name__ == '__main__':
 
   # Optionally load saved weights from file
   # TODO
+
+  # Save the weights on sigint
+  signal.signal(signal.SIGINT, handle_sigint)
 
   # Initialize the weights using Xavier initialization
   model = {}
