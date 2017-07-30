@@ -2,7 +2,6 @@
 import numpy as np
 import cPickle as pickle
 import gym
-import matplotlib.pyplot as plt
 import argparse
 import signal
 

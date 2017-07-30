@@ -1,5 +1,4 @@
 ''' Continuously play episodes of the game to show the results of the weights'''
-import numpy as np
 import cPickle as pickle
 import gym
 import argparse
